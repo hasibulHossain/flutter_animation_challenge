@@ -64,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen>
     );
 
     _controller?.addListener(() {
-      print(_controller?.value);
-      print(_animation?.value);
+      print(_controller?.value); // It will print value between 0.3 to 1.0
+      print(_animation?.value); // It will print the same value as animation controller value for this example. But if we transition color from one another then it provide us between first color to second color.  
     });
   }
 
