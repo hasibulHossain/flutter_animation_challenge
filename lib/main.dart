@@ -39,13 +39,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   /// Animation let us access to manipulate our animation to what and how we want to animate.
   /// And we can set type of animation. ex: double, offset, color
-  Animation<double>? _animation;
-
-  bool isVisible = false;
+  // Animation<double>? _animation;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     //
@@ -56,22 +53,11 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
 
-    _animation = Tween<double>(begin: 0.3, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller!,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _controller?.addListener(() {
-      print(_controller?.value); // It will print value between 0.3 to 1.0
-      print(_animation?.value); // It will print the same value as animation controller value for this example. But if we transition color from one another then it provide us between first color to second color.  
-    });
+    _controller?.addListener(() {print(_controller?.value);});
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller?.dispose();
   }
@@ -81,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       body: AnimatedBuilder(
         animation: _controller!,
-        builder: (_, __) => Column(
+        builder: (_, child) => Transform.rotate(angle: _controller!.value * 3.1416, child: child,),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -90,27 +77,21 @@ class _HomeScreenState extends State<HomeScreen>
               child: IconButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  if (isVisible) {
+                  if (!_controller!.isDismissed) {
                     _controller?.reverse();
                   } else {
                     _controller?.forward();
                   }
-                  setState(() {
-                    isVisible = !isVisible;
-                  });
                 },
-                icon: Opacity(
-                  opacity: _animation!.value,
-                  child: const Icon(
-                    CupertinoIcons.heart_fill,
-                    size: 30,
-                    color: Colors.red,
-                  ),
+                icon: const Icon(
+                  CupertinoIcons.heart_fill,
+                  size: 40,
+                  color: Colors.red,
                 ),
               ),
             ),
             Text(
-              'Tap the icon to toggle opacity',
+              'Tap the icon to rotate',
               style: Theme.of(context).textTheme.bodyText1,
             )
           ],
